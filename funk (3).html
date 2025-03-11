@@ -1,0 +1,240 @@
+<!DOCTYPE html>  
+<html lang="ru">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Мониторинг показателей</title>  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>  
+            <!-- Иконки Bootstrap -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>  
+        body {  
+            background-color: #f8f9fa;  
+            font-family: Arial, sans-serif;  
+        }  
+        .monitor-card {  
+            background: white;  
+            border-radius: 10px;  
+            padding: 20px;  
+            text-align: center;  
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);  
+            margin-bottom: 20px; /* Отступ между строками карточек */  
+            height: 200px; /* Фиксированная высота для одинакового размера карточек */  
+            display: flex; /* Используем Flexbox */  
+            flex-direction: column; /* Вертикальное направление */  
+            justify-content: space-between; /* Равномерное распределение */  
+        }  
+        .monitor-card h5 {  
+            font-size: 0.9rem;  
+            font-weight: bold;  
+            color: #333; /* Увеличиваем контрастность */  
+        }  
+        .monitor-card p {  
+            font-size: 1.5rem;  
+            font-weight: bold;  
+            margin: 10px 0;  
+            color: #007bff; /* Увеличиваем контрастность */  
+        }  
+        .slider {  
+            width: 100%;  
+            margin-top: 10px; /* Добавляем отступ сверху */  
+        }  
+        .big-image {  
+            width: 100%;  
+            height: auto;  
+            margin-top: 20px; /* Отступ между изображением и карточками */  
+        }  
+
+
+        .navbar {
+            background-color: #0056b3;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>  
+</head>  
+<body>
+      
+<!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-flower3"></i> Агрокомплекс
+        </a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="text-white me-3"><i class="bi bi-calendar"></i> 26.02.2025 19:36</span>
+            <span class="text-white me-3"><i class="bi bi-person-circle"></i> Соснин Иван</span>
+            <i id="themeToggle" class="bi bi-moon-fill toggle-theme text-white"></i>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">  
+    <div class="row text-center">  
+        <!-- Температура -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>🌡️ Температура</h5>  
+                <p id="temp-value">0°C</p>  
+                <input type="range" class="slider" id="temp-slider" min="-10" max="50" step="1" aria-label="Температура">  
+            </div>  
+        </div>  
+
+        <!-- Влажность -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>💧 Влажность</h5>  
+                <p id="humidity-value">0%</p>  
+                <input type="range" class="slider" id="humidity-slider" min="0" max="100" step="1" aria-label="Влажность">  
+            </div>  
+        </div>  
+
+        <!-- Освещённость -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>💡 Освещённость</h5>  
+                <p id="light-value">0 люкс</p>  
+                <input type="range" class="slider" id="light-slider" min="0" max="1000" step="10" aria-label="Освещённость">  
+            </div>  
+        </div>  
+
+        <!-- Ошибки -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>🚨 Ошибки</h5>  
+                <p id="errors-value">0</p>  
+                <input type="range" class="slider" id="errors-slider" min="0" max="10" step="1" aria-label="Ошибки">  
+            </div>  
+        </div>  
+
+        <!-- Предупреждения -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>⚠️ Предупреждения</h5>  
+                <p id="warnings-value">0</p>  
+                <input type="range" class="slider" id="warnings-slider" min="0" max="10" step="1" aria-label="Предупреждения">  
+            </div>  
+        </div>  
+
+        <!-- Количество дней с момента посадки -->  
+        <div class="col-md-2">  
+            <div class="monitor-card">  
+                <h5>🌱 Дни с посадки</h5>  
+                <p id="days-value">0 дней</p>  
+            </div>  
+        </div>  
+    </div>  
+
+    <!-- Большое изображение -->  
+    <div class="row">  
+        <div class="container mt-5">  
+            <h1 class="header">Корпус подключён и работает</h1>  
+            <div class="status mt-4">  
+                <p class="temperature">Температура: 36 °C</p>  
+                <p class="humidity">Влажность: 52 %</p>  
+                <p class="light">Освещенность: 84 %</p>  
+                <p class="errors">Ошибки: 2 шт.</p>  
+                <p class="warnings">Предупреждения: 15 шт.</p>  
+            </div>  
+        </div> 
+    </div>  
+</div>  
+
+<script>  
+    function updateValues() {  
+        document.getElementById("temp-value").textContent = document.getElementById("temp-slider").value + "°C";  
+        document.getElementById("humidity-value").textContent = document.getElementById("humidity-slider").value + "%";  
+        document.getElementById("light-value").textContent = document.getElementById("light-slider").value + " люкс";  
+        document.getElementById("errors-value").textContent = document.getElementById("errors-slider").value;  
+        document.getElementById("warnings-value").textContent = document.getElementById("warnings-slider").value;  
+    }  
+
+    function setRandomValues() {  
+        document.getElementById("temp-slider").value = Math.floor(Math.random() * 61) - 10;  
+        document.getElementById("humidity-slider").value = Math.floor(Math.random() * 101);  
+        document.getElementById("light-slider").value = Math.floor(Math.random() * 1001);  
+        document.getElementById("errors-slider").value = Math.floor(Math.random() * 11);  
+        document.getElementById("warnings-slider").value = Math.floor(Math.random() * 11);  
+
+        updateValues();  
+    }  
+
+    document.getElementById("temp-slider").addEventListener("input", updateValues);  
+    document.getElementById("humidity-slider").addEventListener("input", updateValues);  
+    document.getElementById("light-slider").addEventListener("input", updateValues);  
+    document.getElementById("errors-slider").addEventListener("input", updateValues);  
+    document.getElementById("warnings-slider").addEventListener("input", updateValues);  
+
+    window.onload = setRandomValues;  
+</script>  
+<style>  
+
+        .header {  
+            font-size: 36px; /* Увеличенный размер шрифта для заголовка */  
+            color: green;  
+            text-align: center;  
+            margin-bottom: 40px;  
+        }  
+        .status {  
+            background-color: #ccfdc8;  
+            padding: 30px;  
+            border-radius: 10px;  
+            border: 2px solid #6c757d; /* Граница для блока статуса */  
+            font-size: 28px; /* Увеличенный размер шрифта для текста статуса */  
+            text-align: center;  
+        }  
+        .temperature {  
+            color: red;  
+        }  
+        .humidity {  
+            color: green;  
+        }  
+        .light {  
+            color: green;  
+        }  
+        .errors {  
+            color: goldenrod;  
+        }  
+        .warnings {  
+            color: red;  
+        }  
+    </style> 
+</style>  
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+
+<script>  
+document.addEventListener("DOMContentLoaded", function() {
+    function updateViewportScale() {
+        // Проверяем текущую ориентацию экрана
+        if (window.innerWidth < window.innerHeight) {
+            // Портретный режим: уменьшаем масштаб до 0.2
+            document.querySelector("meta[name=viewport]").setAttribute("content", "width=device-width, initial-scale=0.2, maximum-scale=1.0, user-scalable=yes");
+        } else {
+            // Ландшафтный режим: устанавливаем масштаб на 0.43
+            document.querySelector("meta[name=viewport]").setAttribute("content", "width=device-width, initial-scale=0.43, maximum-scale=1.0, user-scalable=yes");
+        }
+    }
+
+    // Проверяем и применяем масштаб при загрузке страницы
+    updateViewportScale();
+
+    // Добавляем обработчик для изменения размера экрана
+    window.addEventListener("resize", updateViewportScale);
+});
+</script>
+
+
+
+
+
+</body>  
+</html>  

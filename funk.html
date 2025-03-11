@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мониторинг теплиц</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <!-- Иконки Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .card-custom {
+            background: #eaf8e4;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .card-custom h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .card-custom p {
+            margin: 5px 0;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .navbar {
+            background-color: #0056b3;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-flower3"></i> Агрокомплекс
+        </a>
+        <div class="ms-auto d-flex align-items-center">
+            <span class="text-white me-3"><i class="bi bi-calendar"></i> 26.02.2025 19:36</span>
+            <span class="text-white me-3"><i class="bi bi-person-circle"></i> Соснин Иван</span>
+            <i id="themeToggle" class="bi bi-moon-fill toggle-theme text-white"></i>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    <div class="row" id="card-container"></div>
+    <nav>
+        <ul class="pagination" id="pagination"></ul>
+    </nav>
+</div>
+<script>
+    const data = Array.from({length: 100}, (_, i) => ({
+        name: `Теплица ${i + 1}`,
+        humidity: Math.floor(Math.random() * 30) + 50,
+        temperature: Math.floor(Math.random() * 10) + 20,
+        light: Math.floor(Math.random() * 2000) + 5000,
+        water: Math.floor(Math.random() * 500) + 200,
+        electricity: Math.floor(Math.random() * 50) + 50,
+        warnings: Math.floor(Math.random() * 3),
+        errors: Math.floor(Math.random() * 2)
+    }));
+
+    let currentPage = 1;
+    const cardsPerPage = 8;
+    const totalPages = Math.ceil(data.length / cardsPerPage);
+
+    function displayCards() {
+        const container = document.getElementById("card-container");
+        container.innerHTML = "";
+        const start = (currentPage - 1) * cardsPerPage;
+        const end = start + cardsPerPage;
+        const paginatedItems = data.slice(start, end);
+
+        paginatedItems.forEach(item => {
+            const card = document.createElement("div");
+            card.classList.add("col-md-3", "mb-3");
+            card.innerHTML = `
+                <div class="card-custom" onclick="location.href='funk (3).html'">
+                    <h5>${item.name}</h5>
+                    <p>💧 Влажность: ${item.humidity}%</p>
+                    <p>🌡️ Температура: ${item.temperature}°C</p>
+                    <p>💡 Освещённость: ${item.light} Лк</p>
+                    <p>🚰 Вода: ${item.water} л</p>
+                    <p>⚡ Электричество: ${item.electricity} кВт/ч</p>
+                    <p>⚠️ Предупреждения: ${item.warnings}</p>
+                    <p>❌ Ошибки: ${item.errors}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const paginationContainer = document.getElementById("pagination");
+        paginationContainer.innerHTML = "";
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement("li");
+            pageItem.classList.add("page-item");
+            if (i === currentPage) {
+                pageItem.classList.add("active");
+            }
+            const pageLink = document.createElement("a");
+            pageLink.classList.add("page-link");
+            pageLink.href = "#";
+            pageLink.textContent = i;
+            pageLink.addEventListener("click", function (e) {
+                e.preventDefault();
+                currentPage = i;
+                displayCards();
+            });
+            pageItem.appendChild(pageLink);
+            paginationContainer.appendChild(pageItem);
+        }
+    }
+
+    displayCards();
+</script>
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+
+<script>  
+document.addEventListener("DOMContentLoaded", function() {
+    function updateViewportScale() {
+        // Проверяем текущую ориентацию экрана
+        if (window.innerWidth < window.innerHeight) {
+            // Портретный режим: уменьшаем масштаб до 0.2
+            document.querySelector("meta[name=viewport]").setAttribute("content", "width=device-width, initial-scale=0.2, maximum-scale=1.0, user-scalable=yes");
+        } else {
+            // Ландшафтный режим: устанавливаем масштаб на 0.43
+            document.querySelector("meta[name=viewport]").setAttribute("content", "width=device-width, initial-scale=0.43, maximum-scale=1.0, user-scalable=yes");
+        }
+    }
+
+    // Проверяем и применяем масштаб при загрузке страницы
+    updateViewportScale();
+
+    // Добавляем обработчик для изменения размера экрана
+    window.addEventListener("resize", updateViewportScale);
+});
+</script>
+
+
+
+
+
+
+</body>
+</html>
